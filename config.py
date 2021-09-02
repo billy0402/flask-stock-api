@@ -16,7 +16,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DEV_DATABASE_URL',
-        'sqlite:///' + os.path.join(BASE_DIR, 'db-dev.sqlite3'),
+        'mssql+pyodbc://sa:Passw0rd@127.0.0.1/StockMap?driver=ODBC Driver 17 for SQL Server',
     )
 
 
