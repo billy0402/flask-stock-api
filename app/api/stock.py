@@ -12,10 +12,12 @@ from . import api
 def stock_crawler(stock_ids):
     stock_urls = '|'.join(f'tse_{stock_id}.tw' for stock_id in stock_ids)
 
-    url = f'http://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch={stock_urls}'
+    url = f'https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch={stock_urls}'
     response = requests.get(url)
-    print(response)
-    stocks = response.json()['msgArray']
+    if response.status_code < 200 or response.status_code > 299:
+        return Stock.query.filter(Stock.StockId.in_(stock_ids)).all()
+
+    stocks = response.json().get('msgArray')
 
     # with open('./stock.json') as file:
     #     stocks = json.loads(file.read())['msgArray']
